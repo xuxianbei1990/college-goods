@@ -1,0 +1,6 @@
+.idea
+.idea/compiler.xml
+.idea/inspectionProfiles
+.idea/inspectionProfiles/Project_Default.xml
+*.iml
+goods-pay/goods-pay.iml

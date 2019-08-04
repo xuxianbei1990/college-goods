@@ -19,6 +19,8 @@
         <module>goods-provider</module>
         <module>goods-common</module>
         <module>goods-tools</module>
+        <module>goods-design-order</module>
+        <module>goods-pay</module>
     </modules>
     <!-- TODO project name  -->
     <name>quickstart</name>
