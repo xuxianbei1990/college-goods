@@ -1,8 +1,9 @@
 package pay.service;
 
+
 import pay.model.*;
 
-/**
+/**  支付服务
  * User: xuxianbei
  * Date: 2019/8/4
  * Time: 13:56
@@ -14,18 +15,18 @@ public interface PayService {
      * 校验
      * @return
      */
-    boolean verify();
+    int getPayTypeId();
 
 
-    PayResult pay(PayType payType, SellerPayBind sellerPayBind);
+    //PayDTO 改为 PayDispatchDTO
+    // PayResult 升级为 DispatcherResult
+    DispatcherResult pay(PayType payType, SellerPayBind sellerPayBind, PayDispatchDTO payDispatchDTO);
 
     /**
      * 退款
-     * @param cash
-     * @param thirdTradeNum
      * @return
      */
-    RefundResult refund(Integer cash, String thirdTradeNum) ;
+    DispatcherResult refund(PayType payType, SellerPayBind sellerPayBind, PayDispatchDTO payDispatchDTO) ;
 
     /**
      * 支付查询

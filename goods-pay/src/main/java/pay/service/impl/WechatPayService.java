@@ -1,7 +1,7 @@
 package pay.service.impl;
 
+import org.springframework.stereotype.Component;
 import pay.model.*;
-import pay.service.PayService;
 
 /**
  * User: xuxianbei
@@ -9,20 +9,22 @@ import pay.service.PayService;
  * Time: 11:48
  * Version:V1.0
  */
-public class WechatPayService implements PayService {
+@Component
+public class WechatPayService extends AbstractPayService {
+
 
     @Override
-    public boolean verify() {
-        return false;
+    public int getPayTypeId() {
+        return 0;
     }
 
     @Override
-    public PayResult pay(PayType payType, SellerPayBind sellerPayBind) {
+    public PayResult doPay(PayType payType, SellerPayBind sellerPayBind, PayDTO payDTO) {
         return null;
     }
 
     @Override
-    public RefundResult refund(Integer cash, String thirdTradeNum) {
+    public RefundResult doRefund(PayType payType, SellerPayBind sellerPayBind, RefundDTO payDTO) {
         return null;
     }
 

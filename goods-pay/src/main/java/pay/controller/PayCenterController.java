@@ -1,48 +1,45 @@
 package pay.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import pay.model.PayQueryResult;
-import pay.model.PayResult;
-import pay.model.RefundQueryResult;
-import pay.model.RefundResult;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+import pay.model.*;
 import pay.service.PayCenterService;
 
-/**
+/**支付中心
+ * 预期：支付统一管理类
+ * 只提供基础支付接口。
  * User: xuxianbei
- * Date: 2019/8/2
- * Time: 18:18
+ * Date: 2019/8/12
+ * Time: 9:34
  * Version:V1.0
+ * 未实现：所有参数校验问题
  */
 @RestController
 @RequestMapping("/payCenter")
 public class PayCenterController {
 
+    @Autowired
     PayCenterService payCenterService;
 
 
     /**
      * 支付
-     * @param cash
-     * @param userKey
-     * @param sellerId
      * @return
+     *  未使用 PayResult 封装结果
      */
-    @GetMapping("/pay")
-    public PayResult pay(Integer cash, String userKey, Integer sellerId) {
-        return null;
+    @PostMapping("/pay")
+    public PayResult pay(@Validated @RequestBody PayDTO payDTO) {
+        return payCenterService.pay(payDTO);
     }
 
     /**
      * 退款
-     * @param cash
-     * @param thirdTradeNum
      * @return
      */
-    @GetMapping("/refund")
-    public RefundResult refund(Integer cash, String thirdTradeNum) {
-        return null;
+    @PostMapping("/refund")
+    public RefundResult refund(@Validated @RequestBody RefundDTO refundDTO) {
+        return payCenterService.refund(refundDTO);
     }
 
     /**
@@ -66,6 +63,5 @@ public class PayCenterController {
     public RefundQueryResult refundQuery(String thirdTradeNum) {
         return null;
     }
-
 
 }

@@ -1,7 +1,7 @@
 package pay.service.impl;
 
+import org.springframework.stereotype.Component;
 import pay.model.*;
-import pay.service.PayService;
 
 /**
  * User: xuxianbei
@@ -9,22 +9,22 @@ import pay.service.PayService;
  * Time: 11:51
  * Version:V1.0
  */
-public class QFPayService implements PayService {
-
+@Component
+public class QFPayService extends AbstractPayService {
 
     //暂时以这种方式实现。后续可能优化为注解或者泛型或者数据库配置
     @Override
-    public boolean verify() {
-        return false;
+    public int getPayTypeId() {
+        return 1;
     }
 
     @Override
-    public PayResult pay(PayType payType, SellerPayBind sellerPayBind) {
+    public PayResult doPay(PayType payType, SellerPayBind sellerPayBind, PayDTO payDTO) {
         return null;
     }
 
     @Override
-    public RefundResult refund(Integer cash, String thirdTradeNum) {
+    public RefundResult doRefund(PayType payType, SellerPayBind sellerPayBind, RefundDTO payDTO) {
         return null;
     }
 
@@ -37,4 +37,6 @@ public class QFPayService implements PayService {
     public RefundQueryResult refundQuery(String thirdTradeNum) {
         return null;
     }
+
+
 }
