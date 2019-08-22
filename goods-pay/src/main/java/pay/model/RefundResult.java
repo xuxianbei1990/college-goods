@@ -14,5 +14,7 @@ public class RefundResult implements DispatcherResult {
 
     private Integer payTypeId;
 
+    private Integer refundType;
+
     private Object data;
 }

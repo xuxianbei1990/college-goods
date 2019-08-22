@@ -7,4 +7,6 @@ package pay.service;
  * Version:V1.0
  */
 public interface DispatcherResult {
+
+    void setPayTypeId(Integer payTypeId);
 }

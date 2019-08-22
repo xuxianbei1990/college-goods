@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
+import pay.limiting.LeakyBucket;
 import pay.model.*;
 import pay.service.DispatcherResult;
 import pay.service.PayCenterService;
@@ -83,9 +84,13 @@ public class PayCenterDispatchServiceImpl implements PayCenterService {
                 // 这里流程一般都是固定的，所以这样写没有关系
                 if (dispatchFunc != null) {
 //                    Assert.isTrue(payDispatchDTO instanceof PayDTO, "payDispatchDTO 不是 payDTO 的实例，赋值错误");
-                    DispatcherResult payResult = dispatchFunc.dispatch(payService, payType, sellerPayBind, payDispatchDTO);
-//                    payResult.setPayTypeId(payService.getPayTypeId());
-                    return payResult;
+                    if (!LeakyBucket.getInstance().append()) {
+                        throw new RuntimeException("调用太频繁了");
+                    }
+                    DispatcherResult dispatcherResult = dispatchFunc.dispatch(payService, payType, sellerPayBind, payDispatchDTO);
+                    dispatcherResult.setPayTypeId(payService.getPayTypeId());
+//  payResult.setPayTypeId(payService.getPayTypeId());
+                    return dispatcherResult;
                 }
 //                } else if (refund != null) {
 //                    Assert.isTrue(payDispatchDTO instanceof RefundDTO, "payDispatchDTO 不是 refundDTO 的实例，赋值错误");
