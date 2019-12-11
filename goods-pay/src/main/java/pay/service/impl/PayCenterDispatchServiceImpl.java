@@ -47,7 +47,7 @@ public class PayCenterDispatchServiceImpl implements PayCenterService {
 
 
     @FunctionalInterface
-    interface DispatchFunc{
+    interface DispatchFunc {
         DispatcherResult dispatch(PayService payService, PayType payType, SellerPayBind sellerPayBind, PayDispatchDTO payDispatchDTO);
     }
 
@@ -56,21 +56,18 @@ public class PayCenterDispatchServiceImpl implements PayCenterService {
         //这样引入一个新的问题，如果我增加的支付查询，需要修改原来的参数接口，明显违背了开闭原则
 //        Pay pay = PayService::pay;
         // Pay 升级到 DispatchFunc
-        DispatchFunc dispatchFunc =  PayService::pay;
+        DispatchFunc dispatchFunc = PayService::pay;
         return (PayResult) templateFunc(payDTO, dispatchFunc);
     }
 
     //优化点
     //1.每个商户的支付类型实际基本不变的，所以没有必要每次查数据库
-    //进一步优化流程 Pay 升级到DispatchFunc
     private Object templateFunc(PayDispatchDTO payDispatchDTO, DispatchFunc dispatchFunc) {
         //从数据库（或者其他）拿到商户关联的支付id
         SellerPayBind sellerPayBind = null;
-//        SellerPayBind sellerPayBind = sellerPayBindMapper.selectBySellerId(payDTO.getSellerId());
         Assert.isTrue(sellerPayBind != null, "参数异常商户id：" + payDispatchDTO.getSellerId());
         //通过支付id拿到支付信息
         PayType payType = null;
-//        PayType payType = payTypeMapper.selectByPrimaryKey(sellerPayBind.getFpayTypeId());
         Assert.isTrue(payType != null, "参数异常支付类型id：" + sellerPayBind.getFpayTypeId());
         //打包组织信息转发给对应的实现
 
@@ -83,21 +80,13 @@ public class PayCenterDispatchServiceImpl implements PayCenterService {
             if (payService.getPayTypeId() == payType.getFpayTypeId()) {
                 // 这里流程一般都是固定的，所以这样写没有关系
                 if (dispatchFunc != null) {
-//                    Assert.isTrue(payDispatchDTO instanceof PayDTO, "payDispatchDTO 不是 payDTO 的实例，赋值错误");
                     if (!LeakyBucket.getInstance().append()) {
                         throw new RuntimeException("调用太频繁了");
                     }
                     DispatcherResult dispatcherResult = dispatchFunc.dispatch(payService, payType, sellerPayBind, payDispatchDTO);
                     dispatcherResult.setPayTypeId(payService.getPayTypeId());
-//  payResult.setPayTypeId(payService.getPayTypeId());
                     return dispatcherResult;
                 }
-//                } else if (refund != null) {
-//                    Assert.isTrue(payDispatchDTO instanceof RefundDTO, "payDispatchDTO 不是 refundDTO 的实例，赋值错误");
-//                    RefundResult refundResult = refund.refund(payService, payType, sellerPayBind, (RefundDTO) payDispatchDTO);
-//                    refundResult.setPayTypeId(payService.getPayTypeId());
-//                    return refundResult;
-//                }
             }
         }
         throw new RuntimeException("未实现或者未配置支付类型");
@@ -110,9 +99,8 @@ public class PayCenterDispatchServiceImpl implements PayCenterService {
 
     @Override
     public RefundResult refund(RefundDTO refundDTO) {
-//        Refund refund = PayService::refund;
-        DispatchFunc dispatchFunc =  PayService::refund;
-        return (RefundResult) templateFunc(refundDTO,dispatchFunc);
+        DispatchFunc dispatchFunc = PayService::refund;
+        return (RefundResult) templateFunc(refundDTO, dispatchFunc);
     }
 
     @Override
