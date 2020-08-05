@@ -1,7 +1,7 @@
 package pay.v1.impl;
 
 import org.springframework.stereotype.Component;
-import pay.v1.DispatchCertifacfate;
+import pay.v1.AbstractCertifacfateDelegate;
 import pay.v1.enums.PaymentTypeEnum;
 
 /**
@@ -11,7 +11,7 @@ import pay.v1.enums.PaymentTypeEnum;
  * Version:V1.0
  */
 @Component
-public class WeiXinCertifacfate extends DispatchCertifacfate {
+public class WeiXinCertifacfate extends AbstractCertifacfateDelegate {
     @Override
     protected boolean support(PaymentTypeEnum paymentTypeEnum) {
         return paymentTypeEnum.equals(PaymentTypeEnum.WECHAT_PAY);
