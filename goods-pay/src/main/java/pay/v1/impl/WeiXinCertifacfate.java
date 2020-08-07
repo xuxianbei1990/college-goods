@@ -1,5 +1,6 @@
 package pay.v1.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import pay.v1.AbstractCertifacfateDelegate;
 import pay.v1.enums.PaymentTypeEnum;
@@ -12,6 +13,10 @@ import pay.v1.enums.PaymentTypeEnum;
  */
 @Component
 public class WeiXinCertifacfate extends AbstractCertifacfateDelegate {
+
+    @Autowired
+    WXPayFaceToFaceCertifacfate wxPayFaceToFaceCertifacfate;
+
     @Override
     protected boolean support(PaymentTypeEnum paymentTypeEnum) {
         return paymentTypeEnum.equals(PaymentTypeEnum.WECHAT_PAY);
@@ -20,6 +25,7 @@ public class WeiXinCertifacfate extends AbstractCertifacfateDelegate {
     @Override
     protected void doPrePay() {
         super.doPrePay();
+        wxPayFaceToFaceCertifacfate.PrePay("dfdf");
     }
 
     @Override

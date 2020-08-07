@@ -18,6 +18,9 @@ import pay.v1.enums.PaymentTypeEnum;
 @Component
 public class AliPayCertifacfate extends AbstractCertifacfateDelegate {
 
+//    @Autowired
+//    private AliPayFaceToFaceCertifacfate aliPayFaceToFaceCertifacfate;
+
     @Override
     protected boolean support(PaymentTypeEnum paymentTypeEnum) {
         return paymentTypeEnum.equals(PaymentTypeEnum.ALI_PAY);
@@ -26,6 +29,7 @@ public class AliPayCertifacfate extends AbstractCertifacfateDelegate {
     @Override
     protected void doPrePay() {
         super.doPrePay();
+//        aliPayFaceToFaceCertifacfate.PrePay("skdjfksj");
     }
 
     @Override

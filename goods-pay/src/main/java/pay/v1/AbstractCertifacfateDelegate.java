@@ -36,7 +36,7 @@ public abstract class AbstractCertifacfateDelegate implements Certifacate, UrlCa
     private void doDispatch(CertificateEnum certificateEnum, PaymentTypeEnum paymentTypeEnum, Integer function) {
         //未解决问题：如果支付流程发生变更，这里将无法适应
         if (certificateEnum.equals(CertificateEnum.Pre_Pay)) {
-            //解决如果有第三种支付厂商出现；
+            //解决如果有第三种支付厂商出现； 即支付厂商水平扩容问题
             if (support(paymentTypeEnum)) {
                 if (function == CERTIFACATE_FUNCTION) {
                     doPrePay();
@@ -72,7 +72,8 @@ public abstract class AbstractCertifacfateDelegate implements Certifacate, UrlCa
         doDispatch(certificateEnum, paymentTypeEnum, function);
         return null;
     }
-
+    //这样写的好处在于：如果日后需要监听什么的，都放在这里就行了
+    //不用关心具体实现，同时兼容个性化监听
     protected void doCallThird() {
     }
 
